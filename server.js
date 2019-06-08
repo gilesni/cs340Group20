@@ -12,6 +12,167 @@ app.use(bodyParser.urlencoded( { extended: true } ));
 
 app.use(express.static('public'));
 
+
+app.get('/users', (req, res, next) => {
+  var customerData;
+  getUserData(mysql)
+  .then((data) => {
+    UserData = data;
+    handleObj = {
+      Users: UserData
+    };
+    res.render("Users", handleObj);
+  })
+  .catch((err) => {
+    console.log(err);
+    res.render('500');
+  });
+});
+
+function getUserData(mysql) {
+  return new Promise((resolve, reject) => {
+    mysql.pool.query('SELECT * FROM Users', (err, results) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(results);
+      }
+    });
+  });
+}
+
+app.post('/createuser', (req, res, next) => {
+  createUser(req.body.name)
+  .then((data) => {
+    res.status(201);
+  })
+  .catch((err) => {
+    console.log(err);
+    res.status(500);
+  })
+});
+
+function createUser(name) {
+  return new Promise((resolve, reject) => {
+    mysql.pool.query("INSERT INTO Users VALUES(?, ?)", [null, name], (err, results) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(results);
+      }
+    });
+  });
+}
+
+
+app.post('/searchuser', (req, res, next) => {
+    res.redirect('/result?name=' + name);
+});
+
+
+app.get('/result', (req, res, next) => {
+   
+   var searchterm = req.query.name;
+   searchUser(searchterm)
+   .then((data) => {
+     handleObj = {
+      col: [{ col: 'uid'}, {col: 'name'}],
+      row: data
+    };
+   res.render("result",handleObj);
+  })
+  .catch((err) => {
+    console.log(err);
+    res.render('500');
+  })
+
+});
+
+
+function searchUser(name) {
+  if(name == ""){
+     return new Promise((resolve, reject) => {
+       mysql.pool.query("SELECT * FROM Users", (err, results) => {
+         if (err) {
+           reject(err);
+         } else {
+           resolve(results);
+           console.log(results);
+         }
+       });
+    }); 
+  }
+  else{
+     return new Promise((resolve, reject) => {
+       mysql.pool.query("SELECT * FROM Users Where name = (?)", [name], (err, results) => {
+      if (err) {
+        reject(err);
+        } else {
+           resolve(results);
+           console.log(results);
+         }
+       });
+     });  
+  }
+}
+
+app.get('/deliverylocations', (req, res, next) => {
+  var DeliveryData;
+  var restaurantData;
+  getDeliveryData(mysql)
+  .then((data) => {
+    DeliveryData = data;
+    return getRestaurantData(mysql)
+  })
+  .then((data) => {
+    restaurantData = data;
+    handleObj = {
+      restaurant: restaurantData,
+      delivery: DeliveryData
+    };
+    res.render("deliverylocations", handleObj);
+  })
+  .catch((err) => {
+    console.log(err);
+    res.render('500');
+  });
+});
+
+function getDeliveryData(mysql) {
+  return new Promise((resolve, reject) => {
+    mysql.pool.query('SELECT * FROM DeliveryLocations', (err, results) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(results);
+      }
+    });
+  });
+}
+
+app.post('/createdelivery', (req, res, next) => {
+  createdelivery(req.body.address,req.body.distance,req.body.rid)
+  .then((data) => {
+    res.status(201);
+  })
+  .catch((err) => {
+    console.log(err);
+    res.status(500);
+  })
+});
+
+function createdelivery(address,distance,rid) {
+  return new Promise((resolve, reject) => {
+    mysql.pool.query("INSERT INTO DeliveryLocations VALUES(?, ?, ?)", [address, distance, rid], (err, results) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(results);
+      }
+    });
+  });
+}
+
 app.get('/restaurant', (req, res, next) => {
   var managerData;
   var restaurantData;
