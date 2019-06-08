@@ -1,0 +1,40 @@
+<body>
+  <main class="container">
+    <div class="form">
+      <h1>Choose Delivery Location</h1>
+      <select id="d-loc">
+        <option selected disabled hidden>Pick Delivery Location</option>
+        {{#each delivery}}
+          <option>{{address}}</option>
+        {{/each}}
+      </select>
+
+      <select id="d-res">
+        <option selected disabled hidden>Pick Restaurant</option>
+        {{#each restaurant}}
+          <option value="{{rid}}">{{name}}</option>
+        {{/each}}
+      </select>
+      <input id="D-search" type="submit" value="Choose">
+    </div>
+
+    <div class="form">
+      <h1>Add Delivery Location</h1>
+      <h3 class="input-text">Address</h3>
+      <input id="D-Address" type="text" placeholder="Address">
+
+      <h3 class="input-text">Distance from Restaurant</h3>
+      <input id="D-Distance" type="text" placeholder="Distance">
+      
+      <select id="rid">
+        <option selected disabled hidden>Choose Restaurant</option>
+        {{#each restaurant}}
+          <option value="{{rid}}">{{name}}</option>
+        {{/each}}
+      </select>
+      <input id="D-add" type="submit" value="Add">
+    </div>
+  </main>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="/delivery.js"></script>
+</body>
