@@ -1,0 +1,107 @@
+body {
+  font-family: 'Raleway', sans-serif;
+  margin: 0;
+  background-color: #BDAEC6;
+}
+
+a {
+  text-decoration: none;
+}
+
+.hidden {
+  display: none;
+}
+
+.site-title {
+  margin: 0;
+  padding: 10px 1em;
+  font-size: 30px;
+  font-weight: 100;
+  background-color: #732C7B;
+  color: #ffffff;
+}
+
+.site-title a {
+  color: #fff;
+}
+
+.navbar {
+  background-color: #9C8AA5;
+  font-size: 18px;
+  line-height: 22px;
+}
+
+.navlist {
+  margin: 0px;
+  padding: 0;
+}
+
+.navitem {
+  display: inline-block;
+}
+
+.navlink a:hover,
+.navlink a:focus {
+  background-color: #732C7B;
+}
+
+a:focus {
+  outline: none;
+}
+
+.navlink a {
+  padding: 8px 10px;
+  display: inline-block;
+  color: #ffffff;
+}
+
+input[type=text], select {
+  width: 100%;
+  padding: 10px 20px;
+  margin: 5px 0px;
+  display: inline-block;
+  border: 1px solid #732C7B;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+input[type=text]:focus {
+  background-color: #BDAEC6;
+  border: 2px solid #732C7B;
+  padding: 9px 20px;
+  outline: none;
+}
+
+input[type=submit] {
+  width: 100%;
+  background-color: #732C7B;
+  color: #ffffff;
+  padding: 10px 20px;
+  margin: 5px 0px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+input[type=submit]:hover {
+  background-color: #421C52;
+}
+
+.container {
+  margin: 50px 10%;
+  background-color: #ffffff;
+}
+
+.form {
+  padding: 10px;
+  background-color: #fff;
+  border-radius: 5px;
+  margin: 20px 0px;
+}
+
+.input-text {
+  margin: 0;
+  padding: 10px 0px;
+  font-size: 30px;
+  font-weight: 100;
+}

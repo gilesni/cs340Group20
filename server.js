@@ -12,6 +12,91 @@ app.use(bodyParser.urlencoded( { extended: true } ));
 
 app.use(express.static('public'));
 
+app.get('/employees', (req, res, next) => {
+  var restaurantData;
+  var managerData;
+  var employeeData;
+  getRestaurantData(mysql)
+  .then((data) => {
+    restaurantData = data;
+    return getEmployeeData(mysql)
+  })
+  .then((data) => {
+    employeeData = data;
+    return getManagerData(mysql)
+  })
+  .then((data) => {
+    managerData = data;
+    handleObj = {
+      restaurant: restaurantData,
+      manager: managerData,
+      employee: employeeData
+    };
+    res.render('employee', handleObj);
+  })
+  .catch((err) => {
+    console.log(err);
+    res.status(500);
+  })
+});
+
+function getEmployeeData(mysql) {
+  return new Promise((resolve, reject) => {
+    mysql.pool.query("SELECT * FROM Employees", (err, results) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(results);
+      }
+    })
+  })
+}
+
+app.put("/assignemployee", (req, res, next) => {
+  changeEmployeeRestaurant(req.body.rid, req.body.eid)
+  .then((data) => {
+    res.status(204);
+  })
+  .catch((err) => {
+    console.log(err);
+    res.status(500);
+  })
+});
+
+function changeEmployeeRestaurant(rid, eid) {
+  return new Promise((resolve, reject) => {
+    mysql.pool.query("UPDATE Employees SET rid=? WHERE eid=?", [rid, eid], (err, results) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(results);
+      }
+    })
+  })
+}
+
+app.post("/createemployee", (req, res, next) => {
+  createNewEmployee(req.body.name, req.body.position, req.body.managerid, req.body.rid)
+  .then((data) => {
+    res.status(201);
+  })
+  .catch((err) => {
+    console.log(err);
+  });
+});
+
+function createNewEmployee(name, position, managerid, rid) {
+  return new Promise((resolve, reject) => {
+    mysql.pool.query("INSERT INTO Employees VALUES(?, ?, ?, ?, ?)", [null, name, position, rid, managerid], (err, results) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(results);
+      }
+    })
+  })
+}
+
 app.get('/restaurant', (req, res, next) => {
   var managerData;
   var restaurantData;
@@ -82,8 +167,27 @@ function createRestaurant(name, open, close, manager) {
 }
 
 app.post('/changemanager', (req, res, next) => {
-
+  changeManager(req.body.managerid, req.body.rid)
+  .then((data) => {
+    res.status(204);
+  })
+  .catch((err) => {
+    console.log(err);
+    res.status(500);
+  })
 });
+
+function changeManager(mid, rid) {
+  return new Promise((resolve, reject) => {
+    mysql.pool.query("UPDATE Restaurant SET mid=? WHERE rid=?", [mid, rid], (err, results) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(results);
+      }
+    });
+  });
+}
 
 app.get('/',function(req,res,next){
   var context = {};
