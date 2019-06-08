@@ -1,0 +1,40 @@
+<body>
+  <main class="container">
+    <div class="form">
+      <h1>Create New Restaurant</h1>
+      <h3 class="input-text">Name</h3>
+      <input id="res-name" type="text" placeholder="Name">
+      <h3 class="input-text">Opening Time</h3>
+      <input id="res-open" type="text" placeholder="Opening Time">
+      <h3 class="input-text">Closing Time</h3>
+      <input id="res-close" type="text" placeholder="Closing Time">
+      <select id="res-man">
+        <option selected disabled hidden>Choose Manager</option>
+        {{#each manager}}
+          <option value="{{managerid}}">{{name}}</option>
+        {{/each}}
+      </select>
+      <input id="res-create" type="submit" value="Create">
+    </div>
+
+    <div class="form">
+      <h1>Change Manager of Restaurant</h1>
+      <h3>Restaurant</h3>
+      <select id="rid">
+        <option selected disabled hidden>Choose Restaurant</option>
+        {{#each restaurant}}
+          <option value="{{rid}}">{{name}}</option>
+        {{/each}}
+      </select>
+      <select id="manid">
+        <option selected disabled hidden>Choose Manager</option>
+        {{#each manager}}
+          <option value="{{managerid}}">{{name}}</option>
+        {{/each}}
+      </select>
+      <input id="man-change" type="submit" value="Change">
+    </div>
+  </main>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="/restaurant.js"></script>
+</body>
