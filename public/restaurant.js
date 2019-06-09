@@ -35,9 +35,10 @@ function createRestaurant() {
     success: (data) => {
       console.log("Sent data");
       alert("Restaurant was succesfully created.");
-      $(name).text("");
-      $(open).text("");
-      $(close).text("");
+      $('#res-name').val("");
+      $('#res-open').val("");
+      $('#res-close').val("");
+      $('#res-man').val("");
     },
     error: (data) => {
       console.log("Failed to send data");
@@ -68,8 +69,11 @@ function changeManager() {
     url: url + "/changemanager",
     method: "post",
     data: data,
-    success: () => {
+    success: (data) => {
       console.log("Sent data");
+      alert("Manager was succesfully changed.");
+      $('#manid').val("");
+      $('#rid').val("");
     },
     error: () => {
       console.log("Failed to send data");

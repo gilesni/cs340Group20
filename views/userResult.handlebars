@@ -1,0 +1,24 @@
+<body>
+  {{> header}}
+  <main class="container">
+    <div class="flex">
+      <div class="user top left">
+          <center><h3 class="column-text">Uid</h3></center>
+      </div>
+      <div class="user top">
+          <center><h3 class="column-text">Name</h3></center>
+      </div>
+      {{#each user}}
+      <div class="user top left">
+        <center><h3 class="input-text">{{uid}}</h3></center>
+      </div>
+      <div class="user top">
+        <center><h3 class="input-text">{{name}}</h3></center>
+      </div>
+      {{/each}}
+    </div>
+    <div class="return-from">
+      <center><h1 class="return-text"><a href="./users">Return</a></h1></center>
+    </div>
+  </main>
+</body>

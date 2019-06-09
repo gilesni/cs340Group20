@@ -1,9 +1,13 @@
 var url = window.location.origin;
 
 function CreateD() {
-  var address = $('#D-Address').val()
-  var rid = $('#rid').val()
-  var distance = $('#D-Distance').val()
+  var address = $('#D-Address').val();
+  var rid = $('#rid').val();
+  var distance = $('#D-Distance').val();
+
+  if (!(address && rid && distance)) {
+    alert("Address, Restaurant, and Distance must be picked for new delivery location.")
+  }
   var data = {
     address: address,
     rid: rid,
@@ -18,9 +22,14 @@ function CreateD() {
     data: data,
     success: () => {
       console.log("Sent data");
+      alert("Delivery location was succesfully created.")
+      $('#D-Address').val("");
+      $('#rid').val("");
+      $('#D-Distance').val("");
     },
     error: () => {
       console.log("Failed to send data");
+      alert("Failed to create delivery location.")
     }
   });
 }
