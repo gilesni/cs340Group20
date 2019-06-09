@@ -1,27 +1,23 @@
 var url = window.location.origin;
 
-function createUser() {
-  var name = $('#Customer-name').val();
-
-  if (!name) {
-    alert("Name must be filled out to create new user.");
-    return;
-  }
-
+function CreateR() {
+  var rd = $('#rewardordis').val()
+  var desc = $('#desc').val()
+  var rid = $('#rid').val()
   var data = {
-    name: name,
+    rd: rd,
+    rid: rid,
+    desc: desc
   };
   console.log("data:");
   console.log(data);
 
   $.ajax({
-    url: url + "/createuser",
+    url: url + "/createreward",
     method: "post",
     data: data,
     success: () => {
       console.log("Sent data");
-      alert("User was succesfully created.")
-      $("#Customer-name").val("");
     },
     error: () => {
       console.log("Failed to send data");
@@ -29,21 +25,21 @@ function createUser() {
   });
 }
 
-function searchUser() {
-  var name = $('#Customer-nameS').val()
+function searchR() {
+  var rid = $('#srid').val()
   var data = {
-    name: name,
+    rid: rid
   };
   console.log("data:");
   console.log(data);
 
   $.ajax({
-    url: url + "/searchuser",
+    url: url + "/searchreward",
     method: "post",
     data: data,
     success: (data) => {
+      $('body').html(data);
       console.log("Sent data");
-      $("body").html(data);
     },
     error: () => {
       console.log("Failed to send data");
@@ -51,5 +47,6 @@ function searchUser() {
   });
 }
 
-$('#Customer-create').click(createUser);
-$('#User-Search').click(searchUser);
+$('#rewardcreate').click(CreateR);
+$('#searchr').click(searchR);
+

@@ -105,6 +105,10 @@ input[type=submit]:hover {
   font-weight: 100;
 }
 
+.cus {
+  width: calc(25% - 2px);
+  background-color: #ffffff;
+}
 .flex {
   display: flex;
   flex-wrap: wrap;

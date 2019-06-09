@@ -36,7 +36,7 @@ app.get('/employees', (req, res, next) => {
   })
   .catch((err) => {
     console.log(err);
-    res.status(500);
+    res.render('500');
   });
 });
 
@@ -52,14 +52,69 @@ function getEmployeeData(mysql) {
   });
 }
 
-app.put("/assignemployee", (req, res, next) => {
-  changeEmployeeRestaurant(req.body.rid, req.body.eid)
+app.post("/searchemployee", (req, res, next) => {
+  searchEmployee(req.body.name, req.body.pos, req.body.res)
   .then((data) => {
-    res.status(204);
+    handleObj = {
+      employee: data
+    };
+    res.render('employeeResult', handleObj);
   })
   .catch((err) => {
     console.log(err);
-    res.status(500);
+    res.render('500');
+  });
+});
+
+function searchEmployee(name, pos) {
+  return new Promise((resolve, reject) => {
+    if (name == "" && !(pos == "")) {
+      mysql.pool.query("SELECT * FROM Employees WHERE role=?", [pos], (err, results) => {
+        if (err) {
+          reject(err);
+        } else {
+          resolve(results);
+        }
+      });
+    } else if (pos == "" && !(name == "")) {
+      mysql.pool.query("SELECT * FROM Employees WHERE name=?", [name], (err, results) => {
+        if (err) {
+          reject(err);
+        } else {
+          resolve(results);
+        }
+      });
+    } else if (!(pos == "" && name == "")) {
+      mysql.pool.query("SELECT * FROM Employees WHERE name=? AND role=?", [name, pos], (err, results) => {
+        if (err) {
+          reject(err);
+        } else {
+          resolve(results);
+        }
+      });
+    } else {
+      mysql.pool.query("SELECT * FROM Employees", (err, results) => {
+        if (err) {
+          reject(err);
+        } else {
+          resolve(results);
+        }
+      });
+    }
+  });
+}
+
+app.put("/assignemployee", (req, res, next) => {
+  changeEmployeeRestaurant(req.body.rid, req.body.eid)
+  .then((data) => {
+    console.log(data);
+    res.json({
+      status: 204
+    });
+  })
+  .catch((err) => {
+    console.log(err);
+    res.render('500');
   });
 });
 
@@ -78,10 +133,13 @@ function changeEmployeeRestaurant(rid, eid) {
 app.post("/createemployee", (req, res, next) => {
   createNewEmployee(req.body.name, req.body.position, req.body.managerid, req.body.rid)
   .then((data) => {
-    res.status(201);
+    res.json({
+      status: 201
+    });
   })
   .catch((err) => {
     console.log(err);
+    res.render('500');
   });
 });
 
@@ -146,11 +204,13 @@ function getRestaurantData(mysql) {
 app.post('/createrestaurant', (req, res, next) => {
   createRestaurant(req.body.name, req.body.open, req.body.close, req.body.manager)
   .then((data) => {
-    res.status(201);
+    res.json({
+      status: 201
+    });
   })
   .catch((err) => {
     console.log(err);
-    res.status(500);
+    res.render('500');
   })
 });
 
@@ -169,7 +229,9 @@ function createRestaurant(name, open, close, manager) {
 app.post('/changemanager', (req, res, next) => {
   changeManager(req.body.managerid, req.body.rid)
   .then((data) => {
-    res.status(204);
+    res.json({
+      status: 204
+    });
   })
   .catch((err) => {
     console.log(err);
@@ -179,7 +241,7 @@ app.post('/changemanager', (req, res, next) => {
 
 function changeManager(mid, rid) {
   return new Promise((resolve, reject) => {
-    mysql.pool.query("UPDATE Restaurant SET mid=? WHERE rid=?", [mid, rid], (err, results) => {
+    mysql.pool.query("UPDATE Manager SET rid=? WHERE managerid=?", [mid, rid], (err, results) => {
       if (err) {
         reject(err);
       } else {
@@ -220,11 +282,13 @@ function getUserData(mysql) {
 app.post('/createuser', (req, res, next) => {
   createUser(req.body.name)
   .then((data) => {
-    res.status(201);
+    res.json({
+      status: 201}
+    );
   })
   .catch((err) => {
     console.log(err);
-    res.status(500);
+    res.render('500');
   });
 });
 
@@ -241,33 +305,247 @@ function createUser(name) {
 }
 
 app.post('/searchuser', (req, res, next) => {
-    res.redirect('/result?name=' + name);
-});
-
-
-app.get('/result', (req, res, next) => {
-
-   var searchterm = req.query.name;
-   searchUser(searchterm)
-   .then((data) => {
-     handleObj = {
-      col: [{ col: 'uid'}, {col: 'name'}],
-      row: data
+  var searchterm = req.body.name;
+  searchUser(searchterm)
+  .then((data) => {
+    handleObj = {
+      user: data
     };
-   res.render("result",handleObj);
+    res.render("userResult", handleObj);
   })
   .catch((err) => {
     console.log(err);
     res.render('500');
-  })
-
+  });
 });
-
 
 function searchUser(name) {
   if(name == ""){
+    return new Promise((resolve, reject) => {
+      mysql.pool.query("SELECT * FROM Users", (err, results) => {
+        if (err) {
+          reject(err);
+        } else {
+          resolve(results);
+        }
+      });
+    });
+  }
+  else{
+    return new Promise((resolve, reject) => {
+      mysql.pool.query("SELECT * FROM Users WHERE name=?", [name], (err, results) => {
+        if (err) {
+          reject(err);
+        } else {
+          resolve(results);
+        }
+      });
+    });
+  }
+}
+
+app.get('/menu', (req, res, next) => {
+  var managerData;
+  var restaurantData;
+  var dishdata;
+  var menudata;
+  getManagerData(mysql)
+  .then((data) => {
+    managerData = data;
+    return getRestaurantData(mysql)
+  })
+  .then((data) => {
+    restaurantData = data;
+    return getdishData(mysql)
+  })
+  .then((data) => {
+    dishData = data;
+    return getmenuData(mysql)
+  })
+  .then((data) => {
+    menuData = data;
+    handleObj = {
+      restaurant: restaurantData,
+      manager: managerData,
+      menu: menuData,
+      dish: dishData
+    };
+    res.render("menu", handleObj);
+  })
+  .catch((err) => {
+    console.log(err);
+    res.render('500');
+  });
+});
+
+function getdishData(mysql) {
+  return new Promise((resolve, reject) => {
+    mysql.pool.query('SELECT * FROM Dishes', (err, results) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(results);
+      }
+    });
+  });
+}
+
+function getmenuData(mysql) {
+  return new Promise((resolve, reject) => {
+    mysql.pool.query('SELECT * FROM Menu', (err, results) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(results);
+      }
+    });
+  });
+}
+
+app.post('/createmenu', (req, res, next) => {
+  createmenu(req.body.mid,req.body.managerid)
+  .then((data) => {
+    res.status(201);
+  })
+  .catch((err) => {
+    console.log(err);
+    res.status(500);
+  })
+});
+
+function createmenu(mid,managerid) {
+  return new Promise((resolve, reject) => {
+    mysql.pool.query("INSERT INTO Menu VALUES(?, ?, ?)", [mid, 0, managerid], (err, results) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(results);
+      }
+    });
+  });
+}
+
+app.post('/addtomenu', (req, res, next) => {
+  addtomenu(req.body.mid,req.body.did)
+  .then((data) => {
+    res.status(201);
+  })
+  .catch((err) => {
+    console.log(err);
+    res.status(500);
+  })
+});
+
+function addtomenu(mid,did) {
+  return new Promise((resolve, reject) => {
+    mysql.pool.query("INSERT INTO MenuContainsDish VALUES(?, ?)", [did,mid], (err, results) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(results);
+      }
+    });
+  });
+}
+
+app.post('/setrmenu', (req, res, next) => {
+  setrmenu(req.body.rid,req.body.mid)
+  .then((data) => {
+    res.status(201);
+  })
+  .catch((err) => {
+    console.log(err);
+    res.status(500);
+  })
+});
+
+function setrmenu(rid,mid) {
+  return new Promise((resolve, reject) => {
+    mysql.pool.query("UPDATE Restaurant SET mid=? WHERE rid=?", [mid, rid], (err, results) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(results);
+      }
+    });
+  });
+}
+
+app.get('/customerrewards', (req, res, next) => {
+  var rewardsData;
+  var restaurantData;
+  getDeliveryData(mysql)
+  .then((data) => {
+    rewardsData = data;
+    return getRestaurantData(mysql)
+  })
+  .then((data) => {
+    restaurantData = data;
+    handleObj = {
+      restaurant: restaurantData,
+      rewards: rewardsData
+    };
+    res.render("customerrewards", handleObj);
+  })
+  .catch((err) => {
+    console.log(err);
+    res.render('500');
+  });
+});
+
+function getrewardsData(mysql) {
+  return new Promise((resolve, reject) => {
+    mysql.pool.query('SELECT * FROM CustomerRewards', (err, results) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(results);
+      }
+    });
+  });
+}
+
+app.post('/createreward', (req, res, next) => {
+  createreward(req.body.rd,req.body.desc,req.body.rid)
+  .then((data) => {
+    res.status(201);
+  })
+  .catch((err) => {
+    console.log(err);
+    res.status(500);
+  })
+});
+
+function createreward(rd,desc,rid) {
+  return new Promise((resolve, reject) => {
+    mysql.pool.query("INSERT INTO CustomerRewards VALUES(?, ?, ?, ?)", [null,desc, rd, rid], (err, results) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(results);
+      }
+    });
+  });
+}
+
+app.post('/searchreward', (req, res, next) => {
+  searchreward(req.body.rid)
+  .then((data) => {
+   obj = {
+      reward: data
+      };
+    res.render('customerrewardsresult',obj);
+  })
+  .catch((err) => {
+    console.log(err);
+    res.status(500);
+  })
+});
+
+function searchreward(rid) {
+  if(rid == ""){
      return new Promise((resolve, reject) => {
-       mysql.pool.query("SELECT * FROM Users", (err, results) => {
+       mysql.pool.query("SELECT * FROM CustomerRewards", (err, results) => {
          if (err) {
            reject(err);
          } else {
@@ -279,7 +557,7 @@ function searchUser(name) {
   }
   else{
      return new Promise((resolve, reject) => {
-       mysql.pool.query("SELECT * FROM Users Where name = (?)", [name], (err, results) => {
+       mysql.pool.query("SELECT * FROM CustomerRewards Where rid = ?", [rid], (err, results) => {
       if (err) {
         reject(err);
         } else {
@@ -291,19 +569,19 @@ function searchUser(name) {
   }
 }
 
-app.get('/deliverylocations', (req, res, next) => {
-  var DeliveryData;
+app.get('/delivery', (req, res, next) => {
+  var deliveryData;
   var restaurantData;
   getDeliveryData(mysql)
   .then((data) => {
-    DeliveryData = data;
+    deliveryData = data;
     return getRestaurantData(mysql)
   })
   .then((data) => {
     restaurantData = data;
     handleObj = {
       restaurant: restaurantData,
-      delivery: DeliveryData
+      delivery: deliveryData
     };
     res.render("deliverylocations", handleObj);
   })
@@ -328,11 +606,13 @@ function getDeliveryData(mysql) {
 app.post('/createdelivery', (req, res, next) => {
   createdelivery(req.body.address,req.body.distance,req.body.rid)
   .then((data) => {
-    res.status(201);
+    res.json({
+      status: 201
+    });
   })
   .catch((err) => {
     console.log(err);
-    res.status(500);
+    res.render('500');
   })
 });
 

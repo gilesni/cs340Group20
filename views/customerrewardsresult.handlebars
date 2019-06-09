@@ -1,0 +1,36 @@
+<body>
+  {{> header}}
+  <main class="container">
+    <div class="flex">
+      <div class="cus top left">
+          <center><h3 class="column-text">Rewardid</h3></center>
+      </div>
+      <div class="cus top left">
+          <center><h3 class="column-text">description</h3></center>
+      </div>
+      <div class="cus top left">
+          <center><h3 class="column-text">Discount/Reward</h3></center>
+      </div>
+      <div class="cus top left">
+          <center><h3 class="column-text">Rid</h3></center>
+      </div>
+      {{#each reward}}
+      <div class="cus top left">
+        <center><h3 class="input-text">{{rewardid}}</h3></center>
+      </div>
+      <div class="cus top left">
+        <center><h3 class="input-text">{{description}}</h3></center>
+      </div>
+      <div class="cus top left">
+        <center><h3 class="input-text">{{discountreward}}</h3></center>
+      </div>
+      <div class="cus top left">
+        <center><h3 class="input-text">{{rid}}</h3></center>
+      </div>
+      {{/each}}
+    </div>
+    <div class="return-from">
+      <center><h1 class="return-text"><a href="./customerrewards">Return</a></h1></center>
+    </div>
+  </main>
+</body>
