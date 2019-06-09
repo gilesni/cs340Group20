@@ -1,14 +1,18 @@
 var url = window.location.origin;
 
 function CreateM() {
-  var mid = $('#menu-id').val()
-  var managerid = $('#mcreate').val()
+  var mid = $('#menu-id').val();
+  var managerid = $('#mcreate').val();
+
+  if (!(mid && managerid)) {
+    alert("Please fill out all of the fields");
+    return;
+  }
+
   var data = {
     mid: mid,
     managerid: managerid
   };
-  console.log("data:");
-  console.log(data);
 
   $.ajax({
     url: url + "/createmenu",
@@ -16,22 +20,30 @@ function CreateM() {
     data: data,
     success: () => {
       console.log("Sent data");
+      $('#menu-id').val();
+      $('#mcreate').val();
+      alert("Successfully create new menu.");
     },
     error: () => {
       console.log("Failed to send data");
+      alert("Failed to create new menu.");
     }
   });
 }
 
 function madd() {
-  var did = $('#did').val()
-  var mid = $('#menu-dish').val()
+  var did = $('#did').val();
+  var mid = $('#menu-dish').val();
+
+  if (!(did && mid)) {
+    alert("Please fill out all fields");
+    return;
+  }
+
   var data = {
     did: did,
     mid: mid
   };
-  console.log("data:");
-  console.log(data);
 
   $.ajax({
     url: url + "/addtomenu",
@@ -39,6 +51,9 @@ function madd() {
     data: data,
     success: () => {
       console.log("Sent data");
+      alert("Dish successfully added to menu.");
+      $('#did').val("");
+      $('#menu-dish').val("");
     },
     error: () => {
       console.log("Failed to send data");
@@ -47,14 +62,18 @@ function madd() {
 }
 
 function smenu() {
-  var rid = $('#rset').val()
-  var mid = $('#menus-id').val()
+  var rid = $('#rset').val();
+  var mid = $('#menus-id').val();
+
+  if (!(rid && mid)) {
+    alert("Please fill out all fields.");
+    return;
+  }
+
   var data = {
     rid: rid,
     mid: mid
   };
-  console.log("data:");
-  console.log(data);
 
   $.ajax({
     url: url + "/setrmenu",
@@ -62,9 +81,13 @@ function smenu() {
     data: data,
     success: () => {
       console.log("Sent data");
+      alert("Menu successfully added to restaurant.");
+      $('#rset').val("");
+      $('#menus-id').val("");
     },
     error: () => {
       console.log("Failed to send data");
+      alert("Failed to add menu to restaurant.");
     }
   });
 }

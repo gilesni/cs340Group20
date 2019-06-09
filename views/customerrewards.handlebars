@@ -11,7 +11,7 @@
       <textarea rows = "5" cols ="50" id = "desc"></textarea>
       <h3 class="input-text">Associated Restaurant</h3>
       <select id="rid">
-        <option selected disabled hidden>Choose Restaurant</option>
+        <option value="" selected disabled hidden>Choose Restaurant</option>
         {{#each restaurant}}
           <option value="{{rid}}">{{name}}</option>
         {{/each}}
@@ -23,7 +23,7 @@
       <h1>Search Customer Rewards for a Restaurant</h1>
       <h3 class="input-text">Select a Restaurant</h3>
       <select id="srid">
-        <option selected disabled hidden>Choose Restaurant</option>
+        <option value="" selected disabled hidden>Choose Restaurant</option>
         {{#each restaurant}}
           <option value="{{rid}}">{{name}}</option>
         {{/each}}

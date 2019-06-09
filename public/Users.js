@@ -25,6 +25,7 @@ function createUser() {
     },
     error: () => {
       console.log("Failed to send data");
+      alert("Failed to create user.");
     }
   });
 }
@@ -47,6 +48,7 @@ function searchUser() {
     },
     error: () => {
       console.log("Failed to send data");
+      alert("Failed to search for user.");
     }
   });
 }
