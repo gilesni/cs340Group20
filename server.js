@@ -190,7 +190,7 @@ function changeManager(mid, rid) {
 }
 
 app.get('/users', (req, res, next) => {
-  var customerData;
+  var UserData;
   getUserData(mysql)
   .then((data) => {
     UserData = data;
@@ -347,7 +347,103 @@ function createdelivery(address,distance,rid) {
     });
   });
 }
+app.get('/dish', (req, res, next) => {
+  var dishData;
+  getDishData(mysql)
+  .then((data) => {
+    dishData = data;
+    handleObj = {
+      dishes: dishData
+    };
+    res.render("dishes", handleObj);
+  })
+  .catch((err) => {
+    console.log(err);
+    res.render('500');
+  });
+});
 
+function getDishData(mysql) {
+  return new Promise((resolve, reject) => {
+    mysql.pool.query('SELECT * FROM Dishes', (err, results) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(results);
+      }
+    });
+  });
+}
+app.post('/createdish', function(req,res,next){
+  createDish(req.body.name, req.body.lunchprice, req.body.dinnerprice)
+  .then((data) => {
+    res.status(204);
+  })
+  .catch((err) => {
+    console.log(err);
+    res.status(500);
+  })
+});
+
+function createDish (name, lunchprice, dinnerprice){
+  return new Promise((resolve, reject) => {
+    mysql.pool.query("INSERT INTO Dishes VALUES(?, ?, ?, ?)", [null, name, lunchprice, dinnerprice], (err, results) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(results);
+      }
+    });
+  });
+}
+
+app.post('/searchdish', function(req,res,next){
+  console.log(req.body.name, req.body.lunchprice, req.body.dinnerprice);
+  searchDish(req.body.name, req.body.lunchprice, req.body.dinnerprice)
+  .then((data) => {
+    handleObj = {
+      dish: data
+    }
+    res.render('dishesResult', handleObj)
+  })
+  .catch((err) => {
+    console.log(err);
+    res.render('500');
+  });
+});
+
+function searchDish(name, lunchprice, dinnerprice) {
+  console.log(name, lunchprice, dinnerprice);
+  return new Promise((resolve, reject) =>{
+    if(!(lunchprice == "" && dinnerprice == "") && name) {
+      mysql.pool.query("SELECT * FROM Dishes WHERE name=?", [name], (err, results) =>{
+        if (err) {
+          reject(err);
+        } else {
+          resolve(results);
+        }
+      });
+    } else if ((lunchprice || dinnerprice) && !name) {
+      mysql.pool.query("SELECT * FROM Dishes WHERE lunchprice=? OR dinnerprice=?", [lunchprice, dinnerprice], (err, results) => {
+        if (err) {
+          reject(err);
+        } else {
+          console.log("456")
+          console.log(results)
+          resolve(results);
+        }
+      });
+    }else{
+      mysql.pool.query("SELECT * FROM Dishes WHERE name=? AND lunchprice=? AND dinnerprice=?", [name, lunchprice, dinnerprice], (err, results) => {
+        if (err) {
+          reject(err);
+        } else {
+          resolve(results);
+        }
+      });
+    }
+  });
+}
 app.get('/',function(req,res,next){
   var context = {};
   var createString = "CREATE TABLE diagnostic(" +
@@ -387,3 +483,4 @@ app.use(function(err, req, res, next){
 app.listen(app.get('port'), function(){
   console.log('Express started on http://localhost:' + app.get('port') + '; press Ctrl-C to terminate.');
 });
+
