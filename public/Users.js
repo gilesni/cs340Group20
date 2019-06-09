@@ -1,7 +1,13 @@
 var url = window.location.origin;
 
 function createUser() {
-  var name = $('#Customer-name').val()
+  var name = $('#Customer-name').val();
+
+  if (!name) {
+    alert("Name must be filled out to create new user.");
+    return;
+  }
+
   var data = {
     name: name,
   };
@@ -14,6 +20,8 @@ function createUser() {
     data: data,
     success: () => {
       console.log("Sent data");
+      alert("User was succesfully created.")
+      $("#Customer-name").val("");
     },
     error: () => {
       console.log("Failed to send data");
@@ -35,7 +43,6 @@ function searchUser() {
     data: data,
     success: (data) => {
       console.log("Sent data");
-      console.log(data);
       $("body").html(data);
     },
     error: () => {
