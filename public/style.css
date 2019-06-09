@@ -89,7 +89,6 @@ input[type=submit]:hover {
 
 .container {
   margin: 50px 10%;
-  background-color: #ffffff;
 }
 
 .form {
@@ -104,4 +103,46 @@ input[type=submit]:hover {
   padding: 10px 0px;
   font-size: 30px;
   font-weight: 100;
+}
+
+.flex {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.user {
+  width: calc(50% - 2px);
+  background-color: #ffffff;
+}
+
+.emp {
+  width: calc(20% - 2px);
+  background-color: #ffffff;
+}
+
+.left {
+  border-right: 2px solid #732C7B;
+}
+
+.right {
+  border-left: 2px solid #732C7B;
+}
+
+.top {
+  border-bottom: 2px solid #732C7B;
+}
+
+.column-text {
+  font-size: 30px;
+  color: #732C7B;
+}
+
+.return-from {
+  margin-top: 5px;
+  background-color: #732C7B;
+  border-radius: 5px;
+}
+
+.return-text a {
+  color: #ffffff;
 }

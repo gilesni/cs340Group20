@@ -35,9 +35,9 @@ function createRestaurant() {
     success: (data) => {
       console.log("Sent data");
       alert("Restaurant was succesfully created.");
-      $(name).text("");
-      $(open).text("");
-      $(close).text("");
+      $('#res-name').text("");
+      $('#res-open').text("");
+      $('#res-close').text("");
     },
     error: (data) => {
       console.log("Failed to send data");

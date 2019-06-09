@@ -1,6 +1,6 @@
 var url = window.location.origin;
 
-function CreateUser() {
+function createUser() {
   var name = $('#Customer-name').val()
   var data = {
     name: name,
@@ -21,7 +21,7 @@ function CreateUser() {
   });
 }
 
-function SearchUser() {
+function searchUser() {
   var name = $('#Customer-nameS').val()
   var data = {
     name: name,
@@ -33,8 +33,10 @@ function SearchUser() {
     url: url + "/searchuser",
     method: "post",
     data: data,
-    success: () => {
+    success: (data) => {
       console.log("Sent data");
+      console.log(data);
+      $("body").html(data);
     },
     error: () => {
       console.log("Failed to send data");
@@ -42,5 +44,5 @@ function SearchUser() {
   });
 }
 
-$('#Customer-create').click(CreateUser);
-$('#User-Search').click(SearchUser);
+$('#Customer-create').click(createUser);
+$('#User-Search').click(searchUser);

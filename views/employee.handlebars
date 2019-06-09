@@ -48,7 +48,7 @@
           <option value="{{eid}}">{{name}}</option>
         {{/each}}
       </select>
-      <input id="assign-submit" type="submit" value="Create">
+      <input id="assign-submit" type="submit" value="Assign">
     </div>
 
     <div class="form">
@@ -65,16 +65,10 @@
         <option value="Sous Chef">Sous Chef</option>
         <option value="Dishwasher">Dishwasher</option>
       </select>
-      <h3 class="input-text">Choose Restaurant</h3>
-      <select id="lookup-res">
-        <option selected disabled hidden>Choose Restaurant</option>
-        {{#each restaurant}}
-          <option value="{{rid}}">{{name}}</option>
-        {{/each}}
-      </select>
       <input id="lookup-submit" type="submit" value="Create">
     </div>
   </main>
+
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script src="/employee.js"></script>
 </body>

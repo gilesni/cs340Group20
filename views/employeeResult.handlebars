@@ -1,0 +1,42 @@
+<body>
+  {{> header}}
+  <main class="container">
+    <div class="flex">
+      <div class="emp top left">
+          <center><h3 class="column-text">Eid</h3></center>
+      </div>
+      <div class="emp top left">
+          <center><h3 class="column-text">Name</h3></center>
+      </div>
+      <div class="emp top left">
+          <center><h3 class="column-text">Role</h3></center>
+      </div>
+      <div class="emp top left">
+          <center><h3 class="column-text">Rid</h3></center>
+      </div>
+      <div class="emp top">
+          <center><h3 class="column-text">Managerid</h3></center>
+      </div>
+      {{#each employee}}
+      <div class="emp top left">
+        <center><h3 class="input-text">{{eid}}</h3></center>
+      </div>
+      <div class="emp top left">
+        <center><h3 class="input-text">{{name}}</h3></center>
+      </div>
+      <div class="emp top left">
+        <center><h3 class="input-text">{{role}}</h3></center>
+      </div>
+      <div class="emp top left">
+        <center><h3 class="input-text">{{rid}}</h3></center>
+      </div>
+      <div class="emp top">
+        <center><h3 class="input-text">{{managerid}}</h3></center>
+      </div>
+      {{/each}}
+    </div>
+    <div class="return-from">
+      <center><h1 class="return-text"><a href="./employee">Return</a></h1></center>
+    </div>
+  </main>
+</body>

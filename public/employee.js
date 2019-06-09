@@ -31,8 +31,8 @@ function createEmployee() {
 $('#emp-create').click(createEmployee);
 
 function assignEmployee() {
-  var res = $('assign-res').val();
-  var emp = $('assign-emp').val();
+  var res = $('#assign-res').val();
+  var emp = $('#assign-emp').val();
 
   var data = {
     rid: res,
@@ -43,7 +43,7 @@ function assignEmployee() {
     url: url + '/assignemployee',
     method: 'put',
     data: data,
-    success: () => {
+    success: (data) => {
       console.log("Sent data");
       alert("Employee was succesfully changed.");
     },
@@ -51,7 +51,33 @@ function assignEmployee() {
       console.log("Failed to send data");
       alert("Failed to change employee.");
     }
-  })
+  });
 }
 
-$("assign-submit").click(assignEmployee);
+$("#assign-submit").click(assignEmployee);
+
+function lookup() {
+  var name = $('#lookup-name').val();
+  var pos = $('#lookup-pos').val();
+
+  var data = {
+    name: name,
+    pos: pos
+  }
+
+  $.ajax({
+    url: url + '/searchemployee',
+    method: 'post',
+    data: data,
+    success: (data) => {
+      console.log("Sent data");
+      $('body').html(data);
+    },
+    error: () => {
+      console.log("Failed to send data");
+      alert("Failed to change employee.");
+    }
+  });
+}
+
+$('#lookup-submit').click(lookup);

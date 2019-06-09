@@ -1,4 +1,5 @@
 <body>
+  {{> header}}
   <main class="container">
     <div class="form">
       <h1>Choose Delivery Location</h1>
@@ -25,7 +26,7 @@
 
       <h3 class="input-text">Distance from Restaurant</h3>
       <input id="D-Distance" type="text" placeholder="Distance">
-      
+
       <select id="rid">
         <option selected disabled hidden>Choose Restaurant</option>
         {{#each restaurant}}
