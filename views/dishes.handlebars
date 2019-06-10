@@ -1,0 +1,27 @@
+<body>
+    {{> header}}
+    <main class="container">
+        <div class="form">
+            <h1>Create New Dish</h1>
+            <h3 class="input-text" >Name</h3>
+            <input id="Dish-name" type="text" placeholder="Dish Name">
+            <h3 class="input-text">Lunch Price</h3>
+            <input id="Lunch-price" type="text" placeholder="Lunch Price">
+            <h3 class="input-text">Dinner Price</h3>
+            <input id="Dinner-price" type="text" placeholder="Dinner Price">
+            <input id="Dish-create" type="submit" value="Create">
+        </div>
+        <div class="form">
+            <h1>Lookup Dish by Price or Name</h1>
+            <h3 class="input-text" >Name</h3>
+            <input id="Dish-nameS" type="text" placeholder="Dish Name">
+            <h3 class="input-text">Lunch Price</h3>
+            <input id="Lunch-priceS" type="text" placeholder="Lunch Price">
+            <h3 class="input-text">Dinner Price</h3>
+            <input id="Dinner-priceS" type="text" placeholder="Dinner Price">
+            <input id="Dish-search" type="submit" value="Search">
+        </div>
+    </main>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="/dishes.js"></script>
+</body>

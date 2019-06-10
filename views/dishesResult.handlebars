@@ -1,0 +1,36 @@
+<body>
+  {{> header}}
+  <main class="container">
+    <div class="flex">
+      <div class="dish top left">
+          <center><h3 class="column-text">Did</h3></center>
+      </div>
+      <div class="dish top left">
+          <center><h3 class="column-text">Name</h3></center>
+      </div>
+      <div class="dish top left">
+          <center><h3 class="column-text">Lunch Price</h3></center>
+      </div>
+      <div class="dish top">
+          <center><h3 class="column-text">Dinner Price</h3></center>
+      </div>
+      {{#each dish}}
+      <div class="dish top left">
+        <center><h3 class="input-text">{{did}}</h3></center>
+      </div>
+      <div class="dish top left">
+        <center><h3 class="input-text">{{name}}</h3></center>
+      </div>
+      <div class="dish top left">
+        <center><h3 class="input-text">{{lunchprice}}</h3></center>
+      </div>
+      <div class="dish top">
+        <center><h3 class="input-text">{{dinnerprice}}</h3></center>
+      </div>
+      {{/each}}
+    </div>
+    <div class="return-from">
+      <center><h1 class="return-text"><a href="./dish">Return</a></h1></center>
+    </div>
+  </main>
+</body>
