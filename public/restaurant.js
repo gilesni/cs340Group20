@@ -34,6 +34,7 @@ function createRestaurant() {
     data: data,
     success: (data) => {
       console.log("Sent data");
+      $("#rid").append(`<option value="${data.rid}">${name}</option>`)
       alert("Restaurant was succesfully created.");
       $('#res-name').val("");
       $('#res-open').val("");

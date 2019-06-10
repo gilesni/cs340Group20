@@ -22,8 +22,9 @@ function createEmployee() {
     url: url + "/createemployee",
     method: "post",
     data: data,
-    success: () => {
+    success: (data) => {
       console.log("Sent data");
+      $('#assign-emp').append(`<option value="${data.eid}">${name}</option>`)
       alert("Employee was succesfully created.");
       $('#emp-name').val("");
       $('#emp-pos').val("");

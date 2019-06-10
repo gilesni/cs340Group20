@@ -18,9 +18,9 @@ function createUser() {
     url: url + "/createuser",
     method: "post",
     data: data,
-    success: () => {
-      console.log("Sent data");
-      alert("User was succesfully created.")
+    success: (data) => {
+      console.log(data);
+      alert("User was succesfully created.");
       $("#Customer-name").val("");
     },
     error: () => {

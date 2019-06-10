@@ -133,8 +133,8 @@ function changeEmployeeRestaurant(rid, eid) {
 app.post("/createemployee", (req, res, next) => {
   createNewEmployee(req.body.name, req.body.position, req.body.managerid, req.body.rid)
   .then((data) => {
-    res.json({
-      status: 201
+    res.status(201).json({
+      eid: data.insertId
     });
   })
   .catch((err) => {
@@ -204,8 +204,8 @@ function getRestaurantData(mysql) {
 app.post('/createrestaurant', (req, res, next) => {
   createRestaurant(req.body.name, req.body.open, req.body.close, req.body.manager)
   .then((data) => {
-    res.json({
-      status: 201
+    res.status(201).json({
+      rid: data.insertId
     });
   })
   .catch((err) => {
@@ -241,7 +241,7 @@ app.post('/changemanager', (req, res, next) => {
 
 function changeManager(mid, rid) {
   return new Promise((resolve, reject) => {
-    mysql.pool.query("UPDATE Manager SET rid=? WHERE managerid=?", [mid, rid], (err, results) => {
+    mysql.pool.query("UPDATE Manager SET rid=? WHERE managerid=?", [rid, mid], (err, results) => {
       if (err) {
         reject(err);
       } else {
@@ -282,9 +282,10 @@ function getUserData(mysql) {
 app.post('/createuser', (req, res, next) => {
   createUser(req.body.name)
   .then((data) => {
+    console.log(data);
     res.json({
-      status: 201}
-    );
+      status: 201
+    });
   })
   .catch((err) => {
     console.log(err);
@@ -405,7 +406,9 @@ function getmenuData(mysql) {
 app.post('/createmenu', (req, res, next) => {
   createmenu(req.body.mid,req.body.managerid)
   .then((data) => {
-    res.status(201);
+    res.status(201).json({
+      mid: data.insertId
+    });
   })
   .catch((err) => {
     console.log(err);
@@ -678,7 +681,6 @@ function createDish (name, lunchprice, dinnerprice){
 }
 
 app.post('/searchdish', function(req,res,next){
-  console.log(req.body.name, req.body.lunchprice, req.body.dinnerprice);
   searchDish(req.body.name, req.body.lunchprice, req.body.dinnerprice)
   .then((data) => {
     handleObj = {
@@ -693,9 +695,8 @@ app.post('/searchdish', function(req,res,next){
 });
 
 function searchDish(name, lunchprice, dinnerprice) {
-  console.log(name, lunchprice, dinnerprice);
   return new Promise((resolve, reject) =>{
-    if(!(lunchprice == "" && dinnerprice == "") && name) {
+    if(!(lunchprice || dinnerprice) && name) {
       mysql.pool.query("SELECT * FROM Dishes WHERE name=?", [name], (err, results) =>{
         if (err) {
           reject(err);
@@ -708,8 +709,6 @@ function searchDish(name, lunchprice, dinnerprice) {
         if (err) {
           reject(err);
         } else {
-          console.log("456")
-          console.log(results)
           resolve(results);
         }
       });

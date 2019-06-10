@@ -18,10 +18,13 @@ function CreateM() {
     url: url + "/createmenu",
     method: "post",
     data: data,
-    success: () => {
+    success: (data) => {
       console.log("Sent data");
-      $('#menu-id').val();
-      $('#mcreate').val();
+      console.log(data);
+      $('#menu-dish').append(`<option value="${data.mid}">${data.mid}</option>`);
+      $('#menus-id').append(`<option value="${data.mid}">${data.mid}</option>`);
+      $('#menu-id').val("");
+      $('#mcreate').val("");
       alert("Successfully create new menu.");
     },
     error: () => {

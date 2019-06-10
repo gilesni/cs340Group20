@@ -4,15 +4,17 @@ function CreateDish() {
     var name = $('#Dish-name').val();
     var lunchprice = $('#Lunch-price').val();
     var dinnerprice = $('#Dinner-price').val();
-    if(!(name && lunchprice && dinnerprice)){
+    if(!(name && dinnerprice)){
         alert("One of the required fields is not filled.");
         return;
     }
+
     var data = {
         name : name,
         dinnerprice : dinnerprice,
         lunchprice : lunchprice,
     };
+
     console.log("data:")
     console.log(data);
     $.ajax({
@@ -37,7 +39,7 @@ function SearchDish() {
     var name = $('#Dish-nameS').val();
     var lunchprice = $('#Lunch-priceS').val();
     var dinnerprice = $('#Dinner-priceS').val();
-    if (!(name || (lunchprice && dinnerprice))) {
+    if (!(lunchprice || dinnerprice) && !name) {
       alert("Please fill in name or either lunch or dinner price.");
       return;
     }
