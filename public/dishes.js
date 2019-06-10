@@ -22,6 +22,9 @@ function CreateDish() {
         success: () =>{
             console.log("Sent Data");
             alert("Dish was succesfully created.");
+            $('#Dish-name').val("");
+            $('#Lunch-price').val("");
+            $('#Dinner-price').val("");
         },
         error: () => {
             console.log("Failed to send data");
@@ -34,6 +37,10 @@ function SearchDish() {
     var name = $('#Dish-nameS').val();
     var lunchprice = $('#Lunch-priceS').val();
     var dinnerprice = $('#Dinner-priceS').val();
+    if (!(name || (lunchprice && dinnerprice))) {
+      alert("Please fill in name or either lunch or dinner price.");
+      return;
+    }
     var data = {
         name: name,
         lunchprice: lunchprice,
@@ -50,6 +57,7 @@ function SearchDish() {
         },
         error: () => {
             console.log("Failed to send data");
+            alert("Failed to search dish.");
         }
     });
 
