@@ -8,11 +8,13 @@ function CreateD() {
   if (!(address && rid && distance)) {
     alert("Address, Restaurant, and Distance must be picked for new delivery location.")
   }
+
   var data = {
     address: address,
     rid: rid,
     distance: distance
   };
+
   console.log("data:");
   console.log(data);
 
@@ -20,8 +22,12 @@ function CreateD() {
     url: url + "/createdelivery",
     method: "post",
     data: data,
-    success: () => {
+    success: (data) => {
       console.log("Sent data");
+      if (data.err == 1) {
+        alert("Distance from restaurant was too far, did not create delivery location.");
+        return;
+      }
       alert("Delivery location was succesfully created.")
       $('#D-Address').val("");
       $('#rid').val("");

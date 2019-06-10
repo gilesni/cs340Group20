@@ -609,13 +609,21 @@ function getDeliveryData(mysql) {
 app.post('/createdelivery', (req, res, next) => {
   createdelivery(req.body.address,req.body.distance,req.body.rid)
   .then((data) => {
-    res.json({
-      status: 201
+    console.log("Delivery data");
+    console.log(data);
+    res.status(201).json({
+      err: 0
     });
   })
   .catch((err) => {
     console.log(err);
-    res.render('500');
+    if (err.sqlState == '45000') {
+      res.status(406).json({
+        err: 1
+      });
+    } else {
+      res.render('500');
+    }
   })
 });
 
@@ -625,6 +633,8 @@ function createdelivery(address,distance,rid) {
       if (err) {
         reject(err);
       } else {
+        console.log("Returning results: ");
+        console.log(results);
         resolve(results);
       }
     });
@@ -713,7 +723,7 @@ function searchDish(name, lunchprice, dinnerprice) {
         }
       });
     }else{
-      mysql.pool.query("SELECT * FROM Dishes WHERE name=? AND lunchprice=? AND dinnerprice=?", [name, lunchprice, dinnerprice], (err, results) => {
+      mysql.pool.query("SELECT * FROM Dishes WHERE name=? OR lunchprice=? OR dinnerprice=?", [name, lunchprice, dinnerprice], (err, results) => {
         if (err) {
           reject(err);
         } else {
